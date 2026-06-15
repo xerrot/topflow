@@ -56,7 +56,7 @@ function App() {
           }}>
             {movie.poster_path ? (
               <img 
-                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
+                src={`/api/tmdb-images/t/p/w200${movie.poster_path}`} 
                 alt={movie.title}
                 style={{ width: '100%', borderRadius: '4px', height: '300px', objectFit: 'cover' }}
               />
