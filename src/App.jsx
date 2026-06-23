@@ -57,7 +57,6 @@ function App() {
               color: '#fff',
               boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
             }}>
-              {/* Постер */}
               <div style={{ position: 'relative' }}>
                 {movie.poster_path ? (
                   <img 
