@@ -7,7 +7,6 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-
     fetch('/api/tmdb/movie/popular?language=en-US&page=1')
       .then((response) => {
         if (!response.ok) {
@@ -27,48 +26,77 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading movies from TMDB...</div>;
+    return <div style={{ padding: '40px', textAlign: 'center', color: '#fff', fontSize: '1.2rem' }}>Loading popular movies...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: '20px', color: 'red' }}>Error: {error}</div>;
+    return <div style={{ padding: '20px', color: '#ff4d4d', textAlign: 'center' }}>Error: {error}</div>;
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1>🍿 TMDB API Gateway Connection Test</h1>
-      <p>If you see movie cards below, your Nginx Reverse Proxy is working perfectly and CORS is defeated!</p>
-      
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-        gap: '20px', 
-        marginTop: '30px' 
-      }}>
-        {movies.map((movie) => (
-          <div key={movie.id} style={{ 
-            border: '1px solid #ccc', 
-            borderRadius: '8px', 
-            padding: '10px',
-            textAlign: 'center',
-            backgroundColor: '#1a1a1a',
-            color: '#fff'
-          }}>
-            {movie.poster_path ? (
-              <img 
-                src={`/api/tmdb-images/t/p/w200${movie.poster_path}`} 
-                alt={movie.title}
-                style={{ width: '100%', borderRadius: '4px', height: '300px', objectFit: 'cover' }}
-              />
-            ) : (
-              <div style={{ height: '300px', backgroundColor: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                No Poster
+    <div style={{ backgroundColor: '#141414', color: '#fff', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        
+        <div style={{ textAlign: 'center', margin: '40px 0' }}>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Trending Movies</h1>
+          <p style={{ color: '#aaa', fontSize: '1.1rem' }}>The most popular movies right now</p>
+        </div>
+        
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', 
+          gap: '30px', 
+          marginTop: '30px' 
+        }}>
+          {movies.map((movie) => (
+            <div key={movie.id} style={{ 
+              border: '1px solid #333', 
+              borderRadius: '12px', 
+              overflow: 'hidden',
+              backgroundColor: '#1f1f1f',
+              color: '#fff',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
+            }}>
+              {/* Постер */}
+              <div style={{ position: 'relative' }}>
+                {movie.poster_path ? (
+                  <img 
+                    src={`/api/tmdb-images/t/p/w200${movie.poster_path}`} 
+                    alt={movie.title}
+                    style={{ width: '100%', height: '320px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div style={{ height: '320px', backgroundColor: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+                    No Poster
+                  </div>
+                )}
+
+                <div style={{
+                  position: 'absolute',
+                  top: '10px',
+                  left: '10px',
+                  backgroundColor: movie.vote_average >= 7 ? '#2e7d32' : '#e65100',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  ★ {movie.vote_average.toFixed(1)}
+                </div>
               </div>
-            )}
-            <h3 style={{ fontSize: '16px', margin: '10px 0 5px 0' }}>{movie.title}</h3>
-            <p style={{ fontSize: '14px', color: '#646cff', margin: 0 }}>⭐ {movie.vote_average.toFixed(1)}</p>
-          </div>
-        ))}
+
+              <div style={{ padding: '15px' }}>
+                <h3 style={{ fontSize: '1rem', margin: '0 0 8px 0', height: '2.4em', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                  {movie.title}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: '#646cff', margin: 0 }}>
+                  {movie.release_date ? movie.release_date.substring(0, 4) : '—'}
+                </p>
+              </div>
+
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
