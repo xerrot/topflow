@@ -8,4 +8,5 @@ services:
       - "8080:80"
     environment:
       - TMDB_API_KEY=${TMDB_API_KEY}
+      - BOT_API_KEY=${BOT_API_KEY}
     restart: unless-stopped
